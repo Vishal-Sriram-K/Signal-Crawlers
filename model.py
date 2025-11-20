@@ -54,4 +54,38 @@ class IntersectionModel:
         g = np.asarray(g, dtype=float)
         mu = self.s * (g / self.C)
         return mu - self.lambdas
-#todo
+    
+    def random_feasible_g(self, seed=None):
+        rng = np.random.default_rng(seed)
+        g = np.full(4, self.G_total / 4.0)
+        g += rng.normal(scale=1.0, size=4)
+        g = project_onto_simplex_with_bounds(
+            g,
+            total=self.G_total,
+            lower=self.g_min,
+            upper=self.g_max,
+        )
+        return g
+    
+def project_onto_simplex_with_bounds(x, total, lower, upper, max_iter=10):
+    x = np.asarray(x, dtype=float)
+    lower = np.asarray(lower, dtype=float)
+    upper = np.asarray(upper, dtype=float)
+    g = np.clip(x, lower, upper)
+
+    for _ in range(max_iter):
+        current_sum = np.sum(g)
+        diff = total - current_sum
+        if abs(diff) < 1e-8:
+            break
+        if diff > 0:
+            free = g < upper - 1e-10
+        else:
+            free = g > lower + 1e-10
+        if not np.any(free):
+            break
+        step = diff / np.sum(free)
+        g[free] += step
+        g = np.clip(g, lower, upper)
+
+    return g
