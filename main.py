@@ -22,7 +22,7 @@ def main():
     g_max = 10
     model = IntersectionModel(lambdas=lambdas, saturation_flows=saturation_flows, C=C, L=L, g_min=g_min, g_max=g_max)
 
-    #Baseline: equal split
+    #Baseline equal split
     g_equal = np.full(4, G_total / 4.0)
     baseline_delay = model.total_delay(g_equal)
 
