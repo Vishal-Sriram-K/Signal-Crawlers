@@ -46,3 +46,28 @@ def projected_gradient_descent( model, x0=None,
             print(f"[PGD] iter={k}, f={f_val:.5f}")
 
     return x, np.array(history)
+
+# Optimization using SLSQP with equality and inequality constraints
+def optimize_slsqp(model, x0=None):
+
+    import scipy.optimize as opt
+
+    if x0 is None:
+        x0 = np.full(4, model.G_total / 4.0)
+
+    bounds = [(model.g_min[i], model.g_max[i]) for i in range(4)]
+    
+    cons = [
+        {"type": "eq", "fun": lambda g: np.sum(g) - model.G_total},
+        {"type": "ineq", "fun": lambda g: model.capacity_slack(g)},
+    ]
+
+    result = opt.minimize(
+        fun=model.total_delay,
+        x0=x0,
+        method="SLSQP",
+        bounds=bounds,
+        constraints=cons,
+        options={"maxiter": 500, "ftol": 1e-8, "disp": False},
+    )
+    return result
