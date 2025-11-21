@@ -19,7 +19,7 @@ def main():
     saturation_flows = np.array([1.2, 1.0, 1.1, 1.3])
 
     g_min = 5.0     # Constraint For Pedistrain walking
-    g_max = 10
+    g_max = None
     model = IntersectionModel(lambdas=lambdas, saturation_flows=saturation_flows, C=C, L=L, g_min=g_min, g_max=g_max)
 
     #Baseline equal split
