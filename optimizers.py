@@ -16,7 +16,7 @@ def numerical_gradient(f, x, h=1e-4):
 # Projected Gradient descent
 def projected_gradient_descent( model, x0=None,
                                 step_size=1, max_iters=200,
-                                tol=1e-3, verbose=False,):
+                                tol=1e-3, verbose=True):
     
     if x0 is None:
         x = np.full(4, model.G_total / 4.0)
