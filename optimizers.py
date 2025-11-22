@@ -74,7 +74,7 @@ def projected_gradient_descent(
 
         x = x_trial
 
-    return x, np.array(history)
+    return x, np.array(history), k
 
 # Optimization using SLSQP with equality and inequality constraints
 def optimize_slsqp(model, x0=None):
@@ -88,7 +88,6 @@ def optimize_slsqp(model, x0=None):
     
     cons = [
         {"type": "eq", "fun": lambda g: np.sum(g) - model.G_total},
-        {"type": "ineq", "fun": lambda g: model.capacity_slack(g)},
     ]
 
     result = opt.minimize(
@@ -99,4 +98,5 @@ def optimize_slsqp(model, x0=None):
         constraints=cons,
         options={"maxiter": 500, "ftol": 1e-8, "disp": False},
     )
+
     return result

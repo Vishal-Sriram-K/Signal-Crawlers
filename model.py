@@ -58,16 +58,9 @@ class IntersectionModel:
 
         return total_delay
 
-    def capacity_slack(self, g):
-
-        g = np.asarray(g, dtype=float)
-        mu = self.s * (g / self.C)
-        return mu - self.lambdas
-    
     def random_feasible_g(self, seed=None):
         rng = np.random.default_rng(seed)
         g = np.full(4, self.G_total / 4.0)
-        g += rng.normal(scale=1.0, size=4)
         g = project_onto_simplex_with_bounds(
             g,
             total=self.G_total,

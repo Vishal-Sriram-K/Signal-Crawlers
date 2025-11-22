@@ -41,8 +41,7 @@ def main():
     slsqp_result = optimize_slsqp(model, x0=g_equal)
     g_opt_slsqp = slsqp_result.x
     delay_opt_slsqp = model.total_delay(g_opt_slsqp)
-
-    print("SLSQP success:", slsqp_result.success)
+    print("Iterations :", slsqp_result.nit)
     print("SLSQP message:", slsqp_result.message)
     print("Optimized green times (SLSQP):", g_opt_slsqp)
     print(f"Optimized delay (SLSQP) = {delay_opt_slsqp:.4f}")
@@ -50,7 +49,7 @@ def main():
 
     #Optimization via PGD
     print("=== Projected Gradient Descent (PGD) ===")
-    g_opt_pgd, history_pgd = projected_gradient_descent( model, x0=g_equal, step_size=1.0, max_iters=400, tol=1e-4, verbose=True )
+    g_opt_pgd, history_pgd, iter = projected_gradient_descent( model, x0=g_equal, step_size=1.0, max_iters=400, tol=1e-4, verbose=True )
     delay_opt_pgd = model.total_delay(g_opt_pgd)
 
     print("Optimized green times (PGD):", g_opt_pgd)
@@ -60,9 +59,8 @@ def main():
     # =====================================
     # VISUALIZATION 1: Compare Delays
     # =====================================
-    methods = ["Baseline", "SLSQP", "PGD"]
+    methods = ["Baseline( 0 Iterations )", f"SLSQP( {slsqp_result.nit} Iterations )", f"PGD( {iter} Iterations )"]
     delays = [baseline_delay, delay_opt_slsqp, delay_opt_pgd]
-
     plt.figure(figsize=(8,5))
     sns.barplot(x=methods, y=delays)
     plt.title("Total Delay Comparison")
