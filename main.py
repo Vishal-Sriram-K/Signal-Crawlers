@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 from model import IntersectionModel
 from optimizers import optimize_slsqp, projected_gradient_descent
@@ -67,6 +68,85 @@ def main():
     print(f"Simulation (baseline): avg delay = {avg_delay_baseline:.2f} s/veh, N = {n_base}")
     print(f"Simulation (SLSQP)  : avg delay = {avg_delay_slsqp:.2f} s/veh, N = {n_slsqp}")
     print()
+
+    # =====================================
+    # VISUALIZATION 1: Compare Delays
+    # =====================================
+    methods = ["Baseline", "SLSQP", "PGD"]
+    delays = [baseline_delay, delay_opt_slsqp, delay_opt_pgd]
+
+    plt.figure(figsize=(8,5))
+    sns.barplot(x=methods, y=delays)
+    plt.title("Total Delay Comparison")
+    plt.ylabel("Delay (veh-sec)")
+    plt.savefig("viz_delay_comparison.png")
+    plt.close()
+
+    # =====================================
+    # VISUALIZATION 2: PGD Convergence Curve
+    # =====================================
+    plt.figure(figsize=(8,5))
+    plt.plot(history_pgd, linewidth=2)
+    plt.title("PGD Convergence Curve")
+    plt.xlabel("Iteration")
+    plt.ylabel("Delay")
+    plt.grid()
+    plt.savefig("viz_pgd_convergence.png")
+    plt.close()
+
+    # =====================================
+    # VISUALIZATION 3: Green Times Comparison
+    # =====================================
+    plt.figure(figsize=(8,5))
+    bar_w = 0.25
+    x = np.arange(4)
+
+    plt.bar(x - bar_w, g_equal, width=bar_w, label="Baseline")
+    plt.bar(x, g_opt_slsqp, width=bar_w, label="SLSQP")
+    plt.bar(x + bar_w, g_opt_pgd, width=bar_w, label="PGD")
+
+    plt.xticks(x, [f"Phase {i+1}" for i in range(4)])
+    plt.ylabel("Green Time (s)")
+    plt.title("Green Times Comparison")
+    plt.legend()
+    plt.savefig("viz_green_times.png")
+    plt.close()
+
+    # =====================================
+    # VISUALIZATION 4: Simulated Queue Over Time (Phase 1)
+    # =====================================
+    sim_time_series = 600  # first 10 minutes
+    queues = []
+    rng = np.random.default_rng(1)
+    q = 0
+    for t in range(sim_time_series):
+        arr = rng.poisson(lambdas[0])
+        q += arr
+        if (t % int(C)) < g_opt_slsqp[0]:  # active if green
+            served = min(q, int(saturation_flows[0]))
+            q -= served
+        queues.append(q)
+
+    plt.figure(figsize=(8,5))
+    plt.plot(queues)
+    plt.title("Queue Length Over Time (Phase 1, SLSQP)")
+    plt.xlabel("Time (s)")
+    plt.ylabel("Queue Length")
+    plt.grid()
+    plt.savefig("viz_queue_phase1.png")
+    plt.close()
+
+    # =====================================
+    # VISUALIZATION 5: Heatmap of Lambda vs Saturation
+    # =====================================
+    plt.figure(figsize=(6,5))
+    data = np.vstack([lambdas, saturation_flows])
+    sns.heatmap(data, annot=True, cmap="Blues",
+                xticklabels=[f"P{i+1}" for i in range(4)],
+                yticklabels=["Arrival λ", "Saturation s"])
+    plt.title("Intersection Demand Heatmap")
+    plt.savefig("viz_heatmap.png")
+    plt.close()
 
 if __name__=="__main__":
     main()
