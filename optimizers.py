@@ -90,13 +90,19 @@ def optimize_slsqp(model, x0=None):
         {"type": "eq", "fun": lambda g: np.sum(g) - model.G_total},
     ]
 
+    history = []
+
+    def callback(g):
+        delay=model.total_delay(g)
+        history.append(delay)
     result = opt.minimize(
         fun=model.total_delay,
         x0=x0,
         method="SLSQP",
         bounds=bounds,
         constraints=cons,
+        callback=callback,
         options={"maxiter": 500, "ftol": 1e-8, "disp": False},
     )
 
-    return result
+    return result,np.array(history)

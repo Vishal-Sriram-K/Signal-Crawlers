@@ -38,7 +38,7 @@ def main():
 
     #Optimization via SLSQP
     print("=== SLSQP Optimization ===")
-    slsqp_result = optimize_slsqp(model, x0=g_equal)
+    slsqp_result,slsqp_history = optimize_slsqp(model, x0=g_equal)
     g_opt_slsqp = slsqp_result.x
     delay_opt_slsqp = model.total_delay(g_opt_slsqp)
     print("Iterations :", slsqp_result.nit)
@@ -121,6 +121,19 @@ def main():
     plt.grid()
     plt.savefig("viz_queue_phase1.png")
     plt.close()
+
+    # =====================================
+    # VISUALIZATION 5: SLSQP Convergence Curve
+    # =====================================
+    plt.figure(figsize=(8,5))
+    plt.plot(slsqp_history, linewidth=2)
+    plt.title("SLSQP Convergence Curve")
+    plt.xlabel("Iteration")
+    plt.ylabel("Delay")
+    plt.grid()
+    plt.savefig("viz_slsqp_convergence.png")
+    plt.close()
+
 
 
 if __name__=="__main__":
