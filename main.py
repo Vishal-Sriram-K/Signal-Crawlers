@@ -4,7 +4,6 @@ import seaborn as sns
 
 from model import IntersectionModel
 from optimizers import optimize_slsqp, projected_gradient_descent
-from simulation import simulate_intersection
 
 
 def main():
@@ -51,22 +50,11 @@ def main():
 
     #Optimization via PGD
     print("=== Projected Gradient Descent (PGD) ===")
-    g_opt_pgd, history_pgd = projected_gradient_descent( model, x0=g_equal, step_size=0.5, max_iters=400, tol=1e-6)
+    g_opt_pgd, history_pgd = projected_gradient_descent( model, x0=g_equal, step_size=1.0, max_iters=400, tol=1e-4, verbose=True )
     delay_opt_pgd = model.total_delay(g_opt_pgd)
 
     print("Optimized green times (PGD):", g_opt_pgd)
     print(f"Optimized delay (PGD) = {delay_opt_pgd:.4f}")
-    print()
-
-    # Simulation comparision
-    print("=== Simulation Validation ===")
-    sim_time = 3600  # 1 hour
-
-    avg_delay_baseline, n_base = simulate_intersection( lambdas, saturation_flows, g_equal, C, L, sim_time=sim_time, seed=1)
-    avg_delay_slsqp, n_slsqp = simulate_intersection( lambdas, saturation_flows, g_opt_slsqp, C, L, sim_time=sim_time, seed=1)
-
-    print(f"Simulation (baseline): avg delay = {avg_delay_baseline:.2f} s/veh, N = {n_base}")
-    print(f"Simulation (SLSQP)  : avg delay = {avg_delay_slsqp:.2f} s/veh, N = {n_slsqp}")
     print()
 
     # =====================================
