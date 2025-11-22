@@ -78,6 +78,5 @@ pip install -r requirements.txt
 
 - Free right-turn handling (uncontrolled turn with zero delay impact)
 - Free left-turn handling (for left-hand traffic systems, uncontrolled movement)
-- SUMO integration
-- Adaptive cycle lengths
-- Phase skipping logic
+- Adaptive cycle lengths and adaptive arrival rates
+- Using better non linear optimization algorithms
