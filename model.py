@@ -57,17 +57,6 @@ class IntersectionModel:
             total_delay += lambda_i * d
 
         return total_delay
-
-    def random_feasible_g(self, seed=None):
-        rng = np.random.default_rng(seed)
-        g = np.full(4, self.G_total / 4.0)
-        g = project_onto_simplex_with_bounds(
-            g,
-            total=self.G_total,
-            lower=self.g_min,
-            upper=self.g_max,
-        )
-        return g
     
 def project_onto_simplex_with_bounds(x, total, lower, upper, max_iter=10):
     x = np.asarray(x, dtype=float)
