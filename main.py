@@ -136,17 +136,6 @@ def main():
     plt.savefig("viz_queue_phase1.png")
     plt.close()
 
-    # =====================================
-    # VISUALIZATION 5: Heatmap of Lambda vs Saturation
-    # =====================================
-    plt.figure(figsize=(6,5))
-    data = np.vstack([lambdas, saturation_flows])
-    sns.heatmap(data, annot=True, cmap="Blues",
-                xticklabels=[f"P{i+1}" for i in range(4)],
-                yticklabels=["Arrival λ", "Saturation s"])
-    plt.title("Intersection Demand Heatmap")
-    plt.savefig("viz_heatmap.png")
-    plt.close()
 
 if __name__=="__main__":
     main()
