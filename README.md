@@ -24,8 +24,8 @@ X = λ / (s × (g/C))
 
 ### Constraints
 Σ gᵢ = C − L  
-g_min ≤ gᵢ ≤ g_max  
-λᵢ ≤ sᵢ × (gᵢ / C)
+g_min ≤ gᵢ
+gᵢ ≤ g_max  
 
 | Symbol                            | Code Variable | Meaning                            | Units   |
 | --------------------------------- | ------------- | ---------------------------------- | ------- |
@@ -66,7 +66,6 @@ PGD converges slow and gives-optimal timings.
 - main.py
 - model.py
 - optimizers.py
-- simulation.py
 - requirements.txt
 - README.md
 
