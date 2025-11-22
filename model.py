@@ -35,19 +35,28 @@ class IntersectionModel:
         self.eps = 1e-6
     
     def total_delay(self, g):
-
         g = np.asarray(g, dtype=float)
-
         g = np.clip(g, self.g_min, self.g_max)
 
-        mu = self.s * (g / self.C)
+        C = self.C
+        lambdas = self.lambdas
+        s = self.s
 
-        slack = np.maximum(mu - self.lambdas, self.eps)
+        total_delay = 0.0
 
-        Wq = self.lambdas / slack
-        D = self.lambdas * Wq
+        for i in range(4):
+            g_i = g[i]
+            lambda_i = lambdas[i]
+            s_i = s[i]
+            g_ratio = g_i / C
+            if g_ratio <= 0:
+                return 1e12  
+            X = lambda_i / (s_i * g_ratio)
+            X = min(X, 0.999)  
+            d = (0.5 * C * (1 - g_ratio) ** 2) / (1 - X)
+            total_delay += lambda_i * d
 
-        return float(np.sum(D))
+        return total_delay
 
     def capacity_slack(self, g):
 
