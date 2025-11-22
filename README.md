@@ -25,6 +25,7 @@ X = λ / (s × (g/C))
 ### Constraints
 Σ gᵢ = C − L  
 g_min ≤ gᵢ
+
 gᵢ ≤ g_max  
 
 | Symbol                            | Code Variable | Meaning                            | Units   |
