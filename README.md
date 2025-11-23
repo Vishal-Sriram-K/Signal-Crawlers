@@ -77,5 +77,5 @@ PGD converges slow and gives-optimal timings.
 
 git clone https://github.com/Vishal-Sriram-K/Signal-Crawlers  
 cd Signal-Crawlers  
-pip install -r requirements.txt
+pip install -r requirements.txt <br>
 python3 main.py
