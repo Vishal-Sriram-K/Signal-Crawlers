@@ -78,8 +78,4 @@ PGD converges slow and gives-optimal timings.
 git clone https://github.com/Vishal-Sriram-K/Signal-Crawlers  
 cd Signal-Crawlers  
 pip install -r requirements.txt
-
-- Free right-turn handling (uncontrolled turn with zero delay impact)
-- Free left-turn handling (for left-hand traffic systems, uncontrolled movement)
-- Adaptive cycle lengths and adaptive arrival rates
-- Using better non linear optimization algorithms
+python3 main.py
