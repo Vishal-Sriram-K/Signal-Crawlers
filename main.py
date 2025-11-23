@@ -13,10 +13,10 @@ def main():
     G_total = C - L
 
     # arrival rates (veh/s)
-    lambdas = np.array([0.5, 0.2, 0.3, 0.4])
+    lambdas = np.array([0.5, 0.1, 0.2, 0.4])
 
     # saturation flows (veh/s) when green
-    saturation_flows = np.array([1.2, 1.0, 1.1, 1.3])
+    saturation_flows = np.array([1.0, 1.0, 1.0, 1.0])
 
     g_min = 5.0     # Constraint For Pedistrain walking
     g_max = None
