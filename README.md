@@ -8,6 +8,11 @@ It includes:
 - Projected Gradient Descent
 - Delay and queue visualizations
 
+## Team Members
+- Vishal Sriram BT2024036
+- Anish Reddy BT2024228
+- Sri charan Reddy BT2024143
+
 ## Problem Statement and Motivation
 
 Traffic signals with fixed timings often do not match real traffic demand. This leads to long queues, wasted green time, and high delays.  
